@@ -5,8 +5,8 @@ We've put together the following guidelines to help you figure out where you can
 ## Table of Contents
 
 1. [Desired Contributions](#desired-contributions)
-2. [How to Contribute](#how-to-contribute)
-3. [How to Setup Tezos](#how-to-setup-tezos)
+1. [How to Contribute](#how-to-contribute)
+1. [How to Setup Tezos](#how-to-setup-tezos)
 
 ## Desired Contributions
 
