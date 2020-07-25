@@ -1,63 +1,92 @@
-# spark.tz
-parameter (pair %transfer (address %to) (nat %tokens)) ;
-storage
-(pair (big_map :ledger address nat)
-    (pair (nat %totalSupply)
-        (pair (address %owner)
-            (pair (string %name) (string %symbol))))) ;
+# spark.tz: A deflationary token on the Tezos blockchain
+#           achieved through burning a portion of transferred tokens
+
+# pair of recipient address and amount to transfer
+parameter (pair address nat);
+
+# pair of ledger map (address -> balance) and total token supply
+storage (pair (big_map address nat) nat);
+
+# (Pair "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG" 100)
+# (Pair { Elt "tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" 10000 } 10000)
 
 code {
+       # Don't send any tez to the contract
+       # stack = (pair parameter storage) : []
+       PUSH mutez 0;
+       AMOUNT;
+       IFCMPNEQ { PUSH string "Please don't send any XTZ"; FAILWITH }
+                {};
+       UNPAIR;
+       DIP { UNPAIR };
+       SWAP;
 
-    # Sent XTZ must be 0
-    # stack state = (pair parameter storage) : []
-    PUSH mutez 0;
-    AMOUNT;
-    IFCMPNEQ
-    { PUSH string "Can only send 0 XTZ"; FAILWITH }
-    {};
-    UNPAIR; # split (pair parameter storage)
-    UNPAIR; # split parameter pair
-    DIP 2 { UNPAPAPAIR }; # split storage pair
+       # Sender in the ledger?
+       # stack = big_map : (pair recipient amount) : totalSupply : []
+       DUP;
+       SENDER;
+       GET;
+       IF_NONE { PUSH string "Sender address not found."; FAILWITH }
+               {
+                 DUP;
+                 DIP 3 { UNPAIR };
+                 DIP 4 { DUP };
+                 DIG 4;
 
+                 # Enough balance?
+                 IFCMPGT { PUSH string "Not enough balance."; FAILWITH }
+                         {
+                           # Update sender balance
+                           # stack = balance : big_map : recipient : amount : totalSupply : []
+                           DIP 3 { DUP };
+                           DIG 3;
+                           SWAP;
+                           SUB;
+                           ABS;
+                           SOME;
+                           SENDER;
+                           UPDATE;
+                         };
+               };
 
-    # Sender must be in the ledger
-    # stack state = to : tokens : big_map : totalSupply : owner : storage tail : []
-    DIG 2;
-    SENDER;
-    MEM;
+       # Burn 1% of transfer
+       # stack = big_map : recipient : amount : totalSupply : []
+       # stack = supply : amount : big_map : recipient : []
+       DUG 3;
+       DUG 3;
+       DUP;
+       PUSH nat 100;
+       SWAP;
+       EDIV;
+       IF_NONE { PUSH string "Error while burning."; FAILWITH }
+               {
+                 CAR;
+                 DUP;
+                 DIG 3;
+                 SUB;
+                 ABS;
+                 DIP { SWAP; SUB; ABS; };
+                 SWAP;
+                 DUG 3;
+                 DUG 3
+               };
 
-    # If sender is in the account registry or else
-    # stack state = bool : big_map : to : tokens : totalSupply : owner : storage tail : []
-    IF
-    {
-        # Sender must have enough balance
-        DUP;
-        SENDER;
-        GET;
-        IF_NONE
-        { PUSH string "Who are you?"; FAILWITH } # double check sender exists
-        {
-            DIG 3;
-            DUP;
-            DIP 2 { DUP };
-            DIG 2;
-            IFCMPGT
-            { PUSH string "Not enough balance"; FAILWITH }
-            {} ;
-        };
-
-        # Update sender balance
-        # storage state = tokens : sender balance : big_map : to : totalSupply : owner : storage : tail : []
-        DUP;
-        DIG 2;
-        SUB;
-        ABS;
-        SOME;
-        DIG 2;
-        SWAP;
-        SENDER;
-        UPDATE;
-
-        # Update recipient balance
-        # big_map : tokens : to : totalSupply : owner : storage : tail : []
-}
+       # Is recipient in the ledger?
+       # If yes, update balance. If no, register and add balance.
+       # stack = big_map : recipient : amountToAdd : newTotalSupply : []
+       DUP;
+       DIP 2 { DUP };
+       DIG 2;
+       GET;
+       IF_SOME {
+                 DIG 3;
+                 ADD;
+                 DIG 2;
+               }
+               { DUG 2 };
+       DIP { SOME };
+       UPDATE;
+       PAIR;
+       NIL operation;
+       PAIR;
+     }
