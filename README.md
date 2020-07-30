@@ -3,6 +3,7 @@
 ## Table of Contents
 
 1. [Description](#description)
+1. [Setting up your environment](#setting-up-your-environment)
 
 ## Description
 A smart contract system on top of the existing Tezos blockchain. [To be added]
@@ -35,7 +36,7 @@ A smart contract system on top of the existing Tezos blockchain. [To be added]
   
     $ docker run --rm -it tezos/tezos:mainnet tezos-node
   
-  We must give ourselves permsiion to use the compiler, so enter:
+  We must give ourselves permission to use the compiler, so enter:
   
     $ sudo chmod a+x /usr/local/bin/opam
   
