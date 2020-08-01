@@ -7,9 +7,6 @@ parameter (pair address nat);
 # pair of ledger map (address -> balance) and total token supply
 storage (pair (big_map address nat) nat);
 
-# (Pair "KT1QuofAgnsWffHzLA7D78rxytJruGHDe7XG" 100)
-# (Pair { Elt "tz1KqTpEZ7Yob7QbPE4Hy4Wo8fHG8LhKxZSx" 10000 } 10000)
-
 code {
        # Don't send any tez to the contract
        # stack = (pair parameter storage) : []
@@ -55,7 +52,7 @@ code {
        DUG 3;
        DUG 3;
        DUP;
-       PUSH nat 100;
+       PUSH nat 50;
        SWAP;
        EDIV;
        IF_NONE { PUSH string "Error while burning."; FAILWITH }
