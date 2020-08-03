@@ -1,3 +1,1 @@
-* text=auto
-*.ocaml linguist-vendored
-CHANGELOG.md export-ignore
+*.ml linguist-detectable=true
