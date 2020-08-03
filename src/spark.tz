@@ -46,7 +46,7 @@ code {
                          };
                };
 
-       # Burn 1% of transfer
+       # Burn 2% of transfer
        # stack = big_map : recipient : amount : totalSupply : []
        # stack = supply : amount : big_map : recipient : []
        DUG 3;
