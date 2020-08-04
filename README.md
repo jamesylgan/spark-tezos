@@ -5,7 +5,7 @@
 1. [Environment Setup](#environment-setup)
 
 ## Description
-With Spark Token, we will observe the effects of deflationary tokens on long term price stability. We followed the Bomb Token’s model of burning a percentage of transacted amounts, steadily and gradually decreasing the total token supply to achieve our token’s deflationary nature. Deployed on the Tezos platform with an initial supply of one million tokens, Spark will burn 2% of transactions. No new coins will be minted.
+With Spark Token, we will observe the effects of deflationary tokens on long term price stability. We followed the Bomb Token’s model of burning a percentage of transacted amounts, steadily and gradually decreasing the total token supply to achieve our token’s deflationary nature. Deployed on the Tezos platform with an initial supply of one million tokens, Spark will burn 2% of transactions. No new coins will be minted. This project is still in very early development phase. The token is yet to be released to the public.
 
 **Whitepaper**: [Link](src/whitepaper.pdf)
 
