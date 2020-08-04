@@ -8,7 +8,7 @@
 1. [Credits](#credits)
 
 ## Description
-With Spark Token, our objective is to observe the effects of deflationary tokens on the long term price stability of cryptocurrencies. We followed the Bomb Token's model of burning a portion of transactions, steadily and gradually decreasing the total token supply to achieve our token's deflationary nature. Deployed on the Tezos blockchain, Spark will initiate with a supply of 1,000,000 tokens and a burn rate of 2%. No new coins will be minted.
+With Spark Token, our objective is to observe the effects of deflationary tokens on the long term price stability of cryptocurrencies. We followed the Bomb Token's model of burning a portion of transactions, steadily and gradually decreasing the total token supply to achieve our token's deflationary nature. Deployed on the Tezos blockchain, Spark will initiate with a supply of 1,000,000 tokens and a burn rate of 2%. No new coins will be minted. This project is still in very early development phase. The token is yet to be released to the public.
 
 ## Whitepaper
 In order to access the whitepaper, please visit this link.
